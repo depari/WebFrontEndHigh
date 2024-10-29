@@ -3,9 +3,7 @@ import { useMovieStore } from '@/stores/movie'
 
 export default function Search() {
   const [searchText, setSearchText] = useState('')
-  const fetchMovies = useMovieStore(state => {
-    return state.fectchMovies
-  })
+  const fetchMovies = useMovieStore(state => state.fectchMovies)
   async function searchMovies() {
     const data = await fetchMovies()
     setMovies(data)
@@ -17,9 +15,9 @@ export default function Search() {
       <input
         value={searchText}
         onChange={e => setSearchText(e.target.value)}
-        onKeyDown={e => e.key === 'Enter' && searchMovies()}
+        onKeyDown={e => e.key === 'Enter' && fetchMovies(searchText)}
       />
-      <button onClick={searchMovies}>검색</button>
+      <button onClick={fetchMovies(searchText)}>검색</button>
     </div>
   )
 }
