@@ -5,6 +5,7 @@ import About from './pages/About'
 import SignIn from './pages/SignIn'
 import Movies from './pages/Movies'
 import MovieDetails from './pages/MovieDetails'
+import NotFound from './pages/NotFound'
 
 // route 정보
 // router 제어
@@ -27,13 +28,19 @@ const router = createBrowserRouter([
       },
       {
         path: '/movies',
-        element: <Movies />
-      },
-      {
-        path: '/movies/:movieId',
-        element: <MovieDetails />
+        element: <Movies />,
+        children: [
+          {
+            path: '/movies/:movieId',
+            element: <MovieDetails />
+          }
+        ]
       }
     ]
+  },
+  {
+    path: '*',
+    element: <NotFound />
   }
 ])
 

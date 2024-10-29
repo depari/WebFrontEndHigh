@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import Modal from '@/components/Modal'
 
 export interface Rating {
   Source: string
@@ -39,7 +40,7 @@ export default function MovieDetails() {
 
   useEffect(() => {
     fetchMovieDetails()
-  }, [])
+  }, [movieId])
 
   async function fetchMovieDetails() {
     const res = await fetch(`https://omdbapi.com/?apikey=7035c60c&i=${movieId}`)
@@ -49,7 +50,7 @@ export default function MovieDetails() {
   }
 
   return (
-    <>
+    <Modal>
       <h1> Movie Detils Page! : {movieId}</h1>
       {movie && (
         <>
@@ -63,6 +64,6 @@ export default function MovieDetails() {
           <p>{movie.Plot}</p>
         </>
       )}
-    </>
+    </Modal>
   )
 }

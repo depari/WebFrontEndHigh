@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
 
 export interface Movie {
   Title: string
@@ -43,6 +43,7 @@ export default function Movies() {
           )
         })}
       </ul>
+      <Outlet />
     </>
   )
 }
