@@ -8,7 +8,12 @@ export interface Movie {
   Poster: string
 }
 
-export const useMovieStore = create((set, get) => {
+interface Store {
+  movies: Movie[]
+  fetchMovies: (searchText: string) => Promise<void>
+}
+
+export const useMovieStore = create<Store>((set, get) => {
   return {
     movies: [] as Movie[],
     fetchMovies: async (searchText: string) => {
