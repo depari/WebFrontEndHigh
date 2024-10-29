@@ -3,7 +3,7 @@ import { useMovieStore } from '@/stores/movie'
 
 export default function Search() {
   const [searchText, setSearchText] = useState('')
-  const fetchMovies = useMovieStore(state => state.fectchMovies)
+  const fetchMovies = useMovieStore(state => state.fetchMovies)
 
   return (
     <div>
