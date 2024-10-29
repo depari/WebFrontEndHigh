@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client'
 // import App from './App.tsx'
 // import Router from '@/routes/index' //index 는 먼저 찾게 된다.- 생략 가능
 import Router from '@/routes'
+import './main.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

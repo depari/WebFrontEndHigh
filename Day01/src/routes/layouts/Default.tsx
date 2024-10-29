@@ -14,7 +14,7 @@ export default function Default() {
           key={location.pathname}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          exit={{ opacity: 0, position: 'absolute' }}
           transition={{ duration: 0.3 }}>
           {outlet}
         </motion.div>
