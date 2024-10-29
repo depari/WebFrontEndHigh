@@ -21,6 +21,7 @@ export const useMovieStore = create(
           set({
             loading: true
           })
+          // await new Promise(resolve => setTimeout(resolve, 2000))
           const res = await fetch(
             `https://omdbapi.com/?apikey=7035c60c&s=${searchText}`
           )
