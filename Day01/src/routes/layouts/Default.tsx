@@ -1,9 +1,11 @@
 import Header from '@/components/Header'
-import { useOutlet } from 'react-router-dom'
+import { useOutlet, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function Default() {
+  const location = useLocation()
   const outlet = useOutlet()
+
   return (
     <>
       <Header />
