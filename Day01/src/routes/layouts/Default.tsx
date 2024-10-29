@@ -7,7 +7,16 @@ export default function Default() {
   return (
     <>
       <Header />
-      {outlet}
+      <AnimatePresence>
+        <motion.div
+          key={location.pathname}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}>
+          {outlet}
+        </motion.div>
+      </AnimatePresence>
     </>
   )
 }
