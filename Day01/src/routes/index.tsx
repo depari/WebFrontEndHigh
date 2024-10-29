@@ -6,6 +6,7 @@ import SignIn from './pages/SignIn'
 import Movies from './pages/Movies'
 import MovieDetails from './pages/MovieDetails'
 import NotFound from './pages/NotFound'
+import requiresAuth from './loaders/requiresAuth'
 
 // route 정보
 // router 제어
@@ -29,6 +30,9 @@ const router = createBrowserRouter([
       {
         path: '/movies',
         element: <Movies />,
+        loader: () => {
+          return requiresAuth()
+        },
         children: [
           {
             path: '/movies/:movieId',
