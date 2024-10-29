@@ -1,5 +1,5 @@
 import Header from '@/components/Header'
-import { useOutlet, useLocation } from 'react-router-dom'
+import { useOutlet, useLocation, ScrollRestoration } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function Default() {
@@ -19,6 +19,7 @@ export default function Default() {
           {outlet}
         </motion.div>
       </AnimatePresence>
+      <ScrollRestoration />
     </>
   )
 }

@@ -30,9 +30,7 @@ const router = createBrowserRouter([
       {
         path: '/movies',
         element: <Movies />,
-        loader: () => {
-          return requiresAuth()
-        },
+        loader: requiresAuth,
         children: [
           {
             path: '/movies/:movieId',
