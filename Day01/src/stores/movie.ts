@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { combine } from 'zustand/middleware'
 
 export interface Movie {
   Title: string
@@ -8,22 +9,23 @@ export interface Movie {
   Poster: string
 }
 
-interface Store {
-  movies: Movie[]
-  fetchMovies: (searchText: string) => Promise<void>
-}
-
-export const useMovieStore = create<Store>((set, get) => {
-  return {
-    movies: [] as Movie[],
-    fetchMovies: async (searchText: string) => {
-      const res = await fetch(
-        `https://omdbapi.com/?apikey=7035c60c&s=${searchText}`
-      )
-      const { Search } = await res.json()
-      set({
-        movies: Search
-      })
+export const useMovieStore = create(
+  combine(
+    {
+      movies: [] as Movie[]
+    },
+    set => {
+      return {
+        fetchMovies: async (searchText: string) => {
+          const res = await fetch(
+            `https://omdbapi.com/?apikey=7035c60c&s=${searchText}`
+          )
+          const { Search } = await res.json()
+          set({
+            movies: Search
+          })
+        }
+      }
     }
-  }
-})
+  )
+)
