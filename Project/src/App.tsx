@@ -6,12 +6,13 @@ export default function App() {
   const { data: todos } = userFetchTodos()
   const { mutate: createToto } = useCreateTodo()
   const [todotitle, setTodoTitle] = useState('')
+  // const [todolist, setTodoList] = useState()
 
   return (
     <>
       <div>
         <input
-          type="text"
+          value={todotitle}
           onChange={e => setTodoTitle(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && createToto(todotitle)}
         />

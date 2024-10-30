@@ -21,7 +21,7 @@ export const userFetchTodos = () => {
             headers: {
               'Content-Type': 'application/json',
               apikey: 'KDT8_bcAWVpD8',
-              username: 'KDTB_SEO'
+              username: 'KDTB_SEOa'
             }
           }
         )
@@ -50,7 +50,7 @@ export function useCreateTodo() {
             headers: {
               'Content-Type': 'application/json',
               apikey: 'KDT8_bcAWVpD8',
-              username: 'KDTB_SEO'
+              username: 'KDTB_SEOa'
             },
             body: JSON.stringify({
               title
@@ -60,11 +60,27 @@ export function useCreateTodo() {
       ).json()
       return res.json() as Promise<Todo>
     },
-    onSuccess: todo => {
+    onMutate: title => {
+      //Mutate Function 이 실행되면서 먼저 실행 되는것.
       //배열.unshift(데이터)
-      const todos = queryClient.getQueryData(['todos']) as Todo[]
-      //todos.unshift(todo)
-      queryClient.setQueriesData(['todos'], [todo, ...todos])
+      // const todos = queryClient.getQueryData(['todos']) as Todo[]
+      // if (todos) {
+      //   queryClient.setQueryData(['todos'], [todo, ...todos])
+      // }
+
+      const newTodo = { id: Math.random().toString(), title }
+      const todos = queryClient.getQueryData<Todo[]>(['todos'])
+      if (todos) {
+        queryClient.setQueryData(['todos'], [newTodo, ...todos])
+      }
+    },
+    onSuccess: async () => {
+      console.log(
+        '무효화하기 전 data',
+        queryClient.getQueryData<Todo[]>(['todo'])![0]
+      )
+
+      await queryClient.invalidateQueries({ queryKey: ['todo'] })
     }
   })
 }
