@@ -11,7 +11,6 @@ export default function Movies() {
       <h1>Movies Page!</h1>
       <Search />
       <List />
-
       <Outlet />
     </>
   )

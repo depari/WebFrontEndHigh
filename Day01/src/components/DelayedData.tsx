@@ -1,4 +1,4 @@
-import wait from '@/core/wait'
+import wait from '@/utils/wait'
 import { useQuery } from '@tanstack/react-query'
 
 type ResponseValue = {
