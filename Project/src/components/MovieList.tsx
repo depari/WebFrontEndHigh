@@ -22,7 +22,7 @@ export default function MovieList({ id }: { id: string | number }) {
         onChange={e => searchText.set(e.target.value)}
         onKeyDown={e => e.key === 'Enter' && refetch()}
       />
-      {data?.map((movie: Movie) => {
+      {data?.map(movie => {
         return <div key={movie.imdbID}>{movie.Title}</div>
       })}
 

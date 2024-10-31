@@ -9,8 +9,8 @@ export interface Todo {
   updatedAt: string
 }
 
-export const userFetchTodos = () => {
-  return useQuery({
+export function useFetchTodos() {
+  return useQuery<Todo[]>({
     queryKey: ['todos'],
     queryFn: async () => {
       const res = await (
@@ -75,12 +75,52 @@ export function useCreateTodo() {
       }
     },
     onSuccess: async () => {
-      console.log(
-        '무효화하기 전 data',
-        queryClient.getQueryData<Todo[]>(['todo'])![0]
-      )
+      // console.log(
+      //   '무효화하기 전 data',
+      //   queryClient.getQueryData<Todo[]>(['todo'])![0]
+      // )
 
       await queryClient.invalidateQueries({ queryKey: ['todo'] })
+      console.log(
+        '무효화한 후 data',
+        queryClient.getQueryData<Todo[]>(['todo'])![0]
+      )
     }
+  })
+}
+
+export function useUpdateTodo() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (todo: Todo) => {
+      const res = await await fetch(
+        `https://asia-northeast3-heropy-api.cloudfunctions.net/api/todos/${todo.id}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            apikey: 'KDT8_bcAWVpD8',
+            username: 'KDTB_SEOa'
+          },
+          body: JSON.stringify({
+            title: todo.title,
+            done: todo.done
+          })
+        }
+      )
+      return res.json()
+    },
+    onMutate: () => {},
+    onSuccess: (todo: Todo) => {
+      const todos = queryClient.getQueryData<Todo[]>(['todos'])
+      if (todos) {
+        queryClient.setQueryData(
+          ['todos'],
+          todos.map(t => (t.id === todo.id ? todo : t))
+        )
+      }
+    },
+    onError: () => {},
+    onSettled: () => {}
   })
 }
