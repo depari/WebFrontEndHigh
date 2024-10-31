@@ -7,7 +7,12 @@ export default function TodoList() {
   return (
     <>
       {todos?.map(todo => {
-        return <TodoItem todo={todo} />
+        return (
+          <TodoItem
+            key={todo.id}
+            todo={todo}
+          />
+        )
       })}
     </>
   )

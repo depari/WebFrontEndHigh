@@ -127,3 +127,40 @@ export function useUpdateTodo() {
     onSettled: () => {}
   })
 }
+
+export function useDeleteTodo() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (todo: Todo) => {
+      console.log('useDeleteTodo-mutationFn')
+      const res = await fetch(
+        `https://asia-northeast3-heropy-api.cloudfunctions.net/api/todos/${todo.id}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            apikey: 'KDT8_bcAWVpD8',
+            username: 'KDTB_SEOa'
+          },
+          body: JSON.stringify({
+            title: todo.title,
+            done: todo.done
+          })
+        }
+      )
+      return res.json()
+    },
+    onMutate: (todo: Todo) => {
+      const todos = queryClient.getQueryData<Todo[]>(['todos'])
+      if (todos) {
+        queryClient.setQueryData(
+          ['todos'],
+          todos.filter(t => t.id !== todo.id)
+        )
+      }
+    },
+    onSuccess: (resultTodo: Todo, inputTodo: Todo) => {},
+    onError: () => {},
+    onSettled: () => {}
+  })
+}

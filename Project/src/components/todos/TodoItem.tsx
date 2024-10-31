@@ -1,16 +1,31 @@
 import { useState } from 'react'
-import { useUpdateTodo, type Todo } from '@/hooks/todo'
+import { useUpdateTodo, type Todo, useDeleteTodo } from '@/hooks/todo'
 
 export default function TodoItem({ todo }: { todo: Todo }) {
-  const { mutate, isPending } = useUpdateTodo()
+  const { mutate: mutateToUpdate, isPending } = useUpdateTodo()
+  const { mutate: mutateToDelete } = useDeleteTodo()
   const [isEditMode, setIsEditMode] = useState(false)
   const [title, setTitle] = useState(todo.title)
 
   async function updateTodo(title: string) {
-    mutate({
+    mutateToUpdate({
       ...todo,
       title
     })
+    offEditMode()
+  }
+
+  async function deleteTodo() {
+    console.log('deleteTodo')
+    mutateToDelete(todo)
+    offEditMode()
+  }
+
+  function onEditMode() {
+    setIsEditMode(true)
+  }
+
+  function offEditMode() {
     setIsEditMode(false)
   }
 
@@ -28,6 +43,12 @@ export default function TodoItem({ todo }: { todo: Todo }) {
               updateTodo(title)
             }}>
             {isPending ? '저장 중' : '저장'}
+          </button>
+          <button
+            onClick={() => {
+              deleteTodo()
+            }}>
+            삭제
           </button>
         </>
       ) : (
