@@ -1,6 +1,7 @@
 import { useRef, useEffect } from 'react'
 import { useFetchMovies } from '@/hooks/movie.infinite'
 import Loader from '@/components/Loader'
+import { useInView } from 'react-intersection-observer'
 
 export default function App() {
   const {
@@ -13,29 +14,15 @@ export default function App() {
     refetch
   } = useFetchMovies()
 
-  const observerRef = useRef<HTMLButtonElement | null>(null)
+  // const observerRef = useRef<HTMLButtonElement | null>(null)
+  const { ref, inView } = useInView()
+
   useEffect(() => {
     if (isLoading) return
-
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          console.log('요소가 교차되었어요! fetchNextPage')
-          fetchNextPage()
-        }
-      })
-      // console.log('요소가 교차되었어요!', entries)
-    })
-
-    if (observerRef.current) {
-      console.log('io.observe(observerRef.current)')
-      io.observe(observerRef.current)
+    if (inView) {
+      fetchNextPage()
     }
-    return () => {
-      console.log('io.disconnect')
-      io.disconnect()
-    }
-  }, [isLoading])
+  }, [inView])
 
   function searchMovies() {
     refetch()
@@ -57,7 +44,7 @@ export default function App() {
         {isLoading && <Loader />}
         {hasNextPage && (
           <button
-            ref={observerRef}
+            ref={ref}
             onClick={() => fetchNextPage()}>
             더보기
           </button>
