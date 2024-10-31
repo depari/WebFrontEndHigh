@@ -3,12 +3,19 @@ import { useFetchMovies } from '@/hooks/movie.infinite'
 import Loader from '@/components/Loader'
 
 export default function App() {
-  const { data, fetchNextPage, hasNextPage, isLoading } = useFetchMovies()
-  const [searchText, setSearchText] = useState('')
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isLoading,
+    searchText,
+    setSearchText,
+    refetch
+  } = useFetchMovies()
+  const [inputText, setInputText] = useState('')
 
   function searchMovies() {
-    //
-    useFetchMovies()
+    refetch()
   }
   return (
     <>
@@ -16,9 +23,9 @@ export default function App() {
         <input
           value={searchText}
           onChange={e => setSearchText(e.target.value)}
-          onKeyDown={e => e.key == 'Enter' && searchMovies()}
+          onKeyDown={e => e.key === 'Enter' && searchMovies()}
         />
-        <button>검색</button>
+        <button onClick={() => searchMovies()}>검색</button>
         {isLoading && <Loader />}
         {data?.pages.map(page => {
           return page.Search.map(movie => {

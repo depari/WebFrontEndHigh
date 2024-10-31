@@ -1,4 +1,5 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
+import { useState } from 'react'
 
 export interface SearchMovieResult {
   Search: Movie[]
@@ -15,11 +16,12 @@ export interface Movie {
 }
 
 export const useFetchMovies = () => {
-  return useInfiniteQuery<SearchMovieResult>({
+  const [searchText, setSearchText] = useState('')
+  const query = useInfiniteQuery<SearchMovieResult>({
     queryKey: ['movies'],
     queryFn: async ({ pageParam }) => {
       const res = await fetch(
-        `https://omdbapi.com/?apikey=7035c60c&s=abcd&page=${pageParam}`
+        `https://omdbapi.com/?apikey=7035c60c&s=${searchText}&page=${pageParam}`
       )
       return res.json()
     },
@@ -32,6 +34,13 @@ export const useFetchMovies = () => {
           ? pages.length + 1
           : undefined
       return nextPage
-    }
+    },
+    enabled: false
   })
+
+  return {
+    ...query,
+    searchText,
+    setSearchText
+  }
 }
