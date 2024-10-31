@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useUpdateTodo, type Todo } from '@/hooks/todo'
 
 export default function TodoItem({ todo }: { todo: Todo }) {
-  const { mutateAsync } = useUpdateTodo()
+  const { mutateAsync, isPending } = useUpdateTodo()
   const [isEditMode, setIsEditMode] = useState(false)
   const [title, setTitle] = useState(todo.title)
 
@@ -19,6 +19,7 @@ export default function TodoItem({ todo }: { todo: Todo }) {
       {isEditMode ? (
         <>
           <input
+            disabled={isPending}
             value={title}
             onChange={e => setTitle(e.target.value)}
           />
@@ -26,7 +27,7 @@ export default function TodoItem({ todo }: { todo: Todo }) {
             onClick={() => {
               updateTodo(title)
             }}>
-            저장
+            {isPending ? '저장 중' : '저장'}
           </button>
         </>
       ) : (
