@@ -14,7 +14,6 @@ export default function App() {
     refetch
   } = useFetchMovies()
 
-  // const observerRef = useRef<HTMLButtonElement | null>(null)
   const { ref, inView } = useInView()
 
   useEffect(() => {
@@ -42,7 +41,7 @@ export default function App() {
           })
         })}
         {isLoading && <Loader />}
-        {hasNextPage && (
+        {!isLoading && hasNextPage && (
           <button
             ref={ref}
             onClick={() => fetchNextPage()}>
