@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useFetchMovies } from '@/hooks/movie.infinite'
 
 export default function App() {
-  const { data, fetchNextPage } = useFetchMovies()
+  const { data, fetchNextPage, hasNextPage } = useFetchMovies()
   const [searchText, setSearchText] = useState('')
 
   function searchMovies() {
@@ -23,8 +23,7 @@ export default function App() {
             return <div key={movie.imdbID}>{movie.Title}</div>
           })
         })}
-
-        <button onClick={() => fetchNextPage()}>더보기</button>
+        {hasNextPage && <button onClick={() => fetchNextPage()}>더보기</button>}
       </div>
     </>
   )
