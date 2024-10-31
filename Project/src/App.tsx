@@ -1,11 +1,31 @@
-import TodoCreator from './components/todos/TodoCreator'
-import TodoList from './components/todos/TodoList'
+import { useState } from 'react'
+import { useFetchMovies } from '@/hooks/movie.infinite'
 
 export default function App() {
+  const { data, fetchNextPage } = useFetchMovies()
+  const [searchText, setSearchText] = useState('')
+
+  function searchMovies() {
+    //
+    useFetchMovies()
+  }
   return (
     <>
-      <TodoCreator />
-      <TodoList />
+      <div>
+        <input
+          value={searchText}
+          onChange={e => setSearchText(e.target.value)}
+          onKeyDown={e => e.key == 'Enter' && searchMovies()}
+        />
+        <button>검색</button>
+        {data?.pages.map(page => {
+          return page.Search.map(movie => {
+            return <div key={movie.imdbID}>{movie.Title}</div>
+          })
+        })}
+
+        <button onClick={() => fetchNextPage()}>더보기</button>
+      </div>
     </>
   )
 }
