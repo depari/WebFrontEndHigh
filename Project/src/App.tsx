@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useEffect } from 'react'
 import { useFetchMovies } from '@/hooks/movie.infinite'
 import Loader from '@/components/Loader'
 
@@ -12,7 +12,26 @@ export default function App() {
     setSearchText,
     refetch
   } = useFetchMovies()
-  const [inputText, setInputText] = useState('')
+
+  const observerRef = useRef<HTMLButtonElement | null>(null)
+  useEffect(() => {
+    if (isLoading) return
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          console.log('요소가 교차되었어요! fetchNextPage')
+          fetchNextPage()
+        }
+      })
+      // console.log('요소가 교차되었어요!', entries)
+    })
+
+    console.log('observerRef.current')
+
+    if (observerRef.current) {
+      io.observe(observerRef.current)
+    }
+  }, [isLoading])
 
   function searchMovies() {
     refetch()
@@ -32,7 +51,13 @@ export default function App() {
             return <div key={movie.imdbID}>{movie.Title}</div>
           })
         })}
-        {hasNextPage && <button onClick={() => fetchNextPage()}>더보기</button>}
+        {hasNextPage && (
+          <button
+            ref={observerRef}
+            onClick={() => fetchNextPage()}>
+            더보기
+          </button>
+        )}
       </div>
     </>
   )
