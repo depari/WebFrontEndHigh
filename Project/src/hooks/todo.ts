@@ -110,8 +110,7 @@ export function useUpdateTodo() {
       )
       return res.json()
     },
-    onMutate: () => {},
-    onSuccess: (todo: Todo) => {
+    onMutate: (todo: Todo) => {
       const todos = queryClient.getQueryData<Todo[]>(['todos'])
       if (todos) {
         queryClient.setQueryData(
@@ -120,6 +119,10 @@ export function useUpdateTodo() {
         )
       }
     },
+    //On Success 의 todo 인자와, OnSuccess todo 인자가 다르다.
+    //onMutate 에서 요청 할때 사용한 todo
+    //onSuccess 는 결과로 서버에서 받은 todo
+    onSuccess: (resultTodo: Todo, inputTodo: Todo) => {},
     onError: () => {},
     onSettled: () => {}
   })

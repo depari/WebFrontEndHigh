@@ -2,12 +2,12 @@ import { useState } from 'react'
 import { useUpdateTodo, type Todo } from '@/hooks/todo'
 
 export default function TodoItem({ todo }: { todo: Todo }) {
-  const { mutateAsync, isPending } = useUpdateTodo()
+  const { mutate, isPending } = useUpdateTodo()
   const [isEditMode, setIsEditMode] = useState(false)
   const [title, setTitle] = useState(todo.title)
 
   async function updateTodo(title: string) {
-    await mutateAsync({
+    mutate({
       ...todo,
       title
     })
