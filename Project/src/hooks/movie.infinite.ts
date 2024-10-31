@@ -24,7 +24,7 @@ export const useFetchMovies = () => {
       return res.json()
     },
     initialPageParam: 1,
-    getNextPageParam: (lastPage, pages) => {
+    getNextPageParam: (_lastPage, pages) => {
       // console.log('lastPage:', lastPage)
       // console.log('pages:', pages)
       const nextPage =
